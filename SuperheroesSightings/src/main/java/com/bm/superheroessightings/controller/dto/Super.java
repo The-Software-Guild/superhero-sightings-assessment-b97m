@@ -14,9 +14,10 @@ import java.util.Objects;
  */
 public class Super {
     private int id;
-    private String name, description, superpower;
+    private String name;
+    private String description;
     private boolean isHero;
-
+    private List<Superpower> superpowers;
     private List<Organization> organizations;
     private Map<LocalDate, Location> sightings;
 
@@ -44,20 +45,20 @@ public class Super {
 	this.description = description;
     }
 
-    public String getSuperpower() {
-	return superpower;
-    }
-
-    public void setSuperpower(String superpower) {
-	this.superpower = superpower;
-    }
-
     public boolean isIsHero() {
 	return isHero;
     }
 
     public void setIsHero(boolean isHero) {
 	this.isHero = isHero;
+    }
+
+    public List<Superpower> getSuperpowers() {
+	return superpowers;
+    }
+
+    public void setSuperpowers(List<Superpower> superpowers) {
+	this.superpowers = superpowers;
     }
 
     public List<Organization> getOrganizations() {
@@ -79,13 +80,13 @@ public class Super {
     @Override
     public int hashCode() {
 	int hash = 7;
-	hash = 29 * hash + this.id;
-	hash = 29 * hash + Objects.hashCode(this.name);
-	hash = 29 * hash + Objects.hashCode(this.description);
-	hash = 29 * hash + Objects.hashCode(this.superpower);
-	hash = 29 * hash + (this.isHero ? 1 : 0);
-	hash = 29 * hash + Objects.hashCode(this.organizations);
-	hash = 29 * hash + Objects.hashCode(this.sightings);
+	hash = 61 * hash + this.id;
+	hash = 61 * hash + Objects.hashCode(this.name);
+	hash = 61 * hash + Objects.hashCode(this.description);
+	hash = 61 * hash + (this.isHero ? 1 : 0);
+	hash = 61 * hash + Objects.hashCode(this.superpowers);
+	hash = 61 * hash + Objects.hashCode(this.organizations);
+	hash = 61 * hash + Objects.hashCode(this.sightings);
 	return hash;
     }
 
@@ -113,7 +114,7 @@ public class Super {
 	if (!Objects.equals(this.description, other.description)) {
 	    return false;
 	}
-	if (!Objects.equals(this.superpower, other.superpower)) {
+	if (!Objects.equals(this.superpowers, other.superpowers)) {
 	    return false;
 	}
 	if (!Objects.equals(this.organizations, other.organizations)) {

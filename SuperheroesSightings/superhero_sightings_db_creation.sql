@@ -1,33 +1,47 @@
 DROP SCHEMA IF EXISTS superheroSightingsDB;
 CREATE SCHEMA superheroSightingsDB;
-
 USE superheroSightingsDB;
 
 CREATE TABLE locations (
 	locationId INT AUTO_INCREMENT,
-    `name` VARCHAR(50) NOT NULL,
-    `description` VARCHAR(500) NOT NULL,
-    address VARCHAR(100) NOT NULL,
-    latitude FLOAT NOT NULL,
-    longitude FLOAT NOT NULL,
-    CONSTRAINT PK_locations PRIMARY KEY (locationId)
+    locationName VARCHAR(50) NOT NULL,
+    locationDescription VARCHAR(500) NOT NULL,
+    locationAddress VARCHAR(100) NOT NULL,
+    locationLatitude FLOAT NOT NULL,
+    locationLongitude FLOAT NOT NULL,
+    CONSTRAINT PK_location PRIMARY KEY (locationId)
+);
+
+CREATE TABLE superpowers (
+	superpowerId INT AUTO_INCREMENT,
+    superpowerName VARCHAR(50),
+    CONSTRAINT PK_superpower PRIMARY KEY (superpowerId)
 );
 
 CREATE TABLE supers (
 	superId INT AUTO_INCREMENT,
-    `name` VARCHAR(50) NOT NULL,
-    `description` VARCHAR(500) NOT NULL,
-    isHero BOOLEAN NOT NULL,
-    superpower VARCHAR(50) NOT NULL,
+    superName VARCHAR(50) NOT NULL,
+    superDescription VARCHAR(500) NOT NULL,
+    superIsHero BOOLEAN NOT NULL,
     CONSTRAINT PK_supers PRIMARY KEY (superId)
+);
+
+CREATE TABLE supersHaveSuperpowers (
+	superId INT NOT NULL,
+    superpowerId INT NOT NULL,
+    CONSTRAINT PK_supersHaveSuperpowers PRIMARY KEY (superId, superpowerId),
+    CONSTRAINT FK_supersHaveSuperpowers_supers FOREIGN KEY (superId)
+		REFERENCES supers (superId),
+	CONSTRAINT FK_supersHaveSuperpowers_superpowerId FOREIGN KEY (superpowerId)
+		REFERENCES superpowers (superpowerId)
 );
 
 CREATE TABLE organizations (
 	organizationId INT AUTO_INCREMENT,
-    `name` VARCHAR(50) NOT NULL,
-    `description` VARCHAR(500) NOT NULL,
-    address VARCHAR(100) NOT NULL,
-    contact VARCHAR(100) NOT NULL,
+    organizationName VARCHAR(50) NOT NULL,
+    organizationDescription VARCHAR(500) NOT NULL,
+    organizationAddress VARCHAR(100) NOT NULL,
+    organizationContact VARCHAR(100) NOT NULL,
     CONSTRAINT PK_organizations PRIMARY KEY (organizationId)
 );
 
@@ -42,7 +56,7 @@ CREATE TABLE sightings (
 		REFERENCES locations (locationId)
 );
 
-CREATE TABLE organizationHasMembers (
+CREATE TABLE organizationsHaveMembers (
 	organizationId INT NOT NULL,
     superId INT NOT NULL,
     CONSTRAINT PK_organizationHasMembers PRIMARY KEY (organizationId, superId),
