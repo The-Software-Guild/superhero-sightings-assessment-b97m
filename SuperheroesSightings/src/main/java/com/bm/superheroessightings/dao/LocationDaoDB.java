@@ -47,7 +47,7 @@ public class LocationDaoDB implements LocationDao {
 	try {
 	    locs = jdbc.query(
 		"SELECT * FROM locations",
-		    LOCATION_MAPPER
+		LOCATION_MAPPER
 	    );
 	} catch (DataAccessException ex) {
 	    System.out.println(ex.getMessage());
@@ -80,6 +80,10 @@ public class LocationDaoDB implements LocationDao {
 	double latitude, 
 	double longitude) {
 
+	if (name == null || description == null || address == null) {
+	    return Optional.empty();
+	}
+
 	int rowsUpdated;
 	GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
 	try {
@@ -99,7 +103,7 @@ public class LocationDaoDB implements LocationDao {
 		    statement.setString(1, description);
 		    statement.setString(3, address);
 		    statement.setDouble(4, latitude);
-		    statement.setDouble(5, latitude);
+		    statement.setDouble(5, longitude);
 		    return statement;
 		}, 
 		keyHolder
@@ -122,7 +126,18 @@ public class LocationDaoDB implements LocationDao {
     }
 
     @Override
-    public boolean updateLocation(int locationId, String name, String description, String address, double latitude, double longitude) {
+    public boolean updateLocation(
+	int locationId, 
+	String name, 
+	String description, 
+	String address, 
+	double latitude, 
+	double longitude) {
+
+	if (name == null || description == null || address == null) {
+	    return false;
+	}
+
 	int rowsUpdated;
 	try {
 	    rowsUpdated = jdbc.update(

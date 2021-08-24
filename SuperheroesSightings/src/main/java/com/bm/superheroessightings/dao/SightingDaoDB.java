@@ -67,11 +67,13 @@ public class SightingDaoDB implements SightingDao {
     public Optional<Sighting> getSightingById(int sightingId) {
 	Optional<Sighting> inst;
 	try {
-	    inst = Optional.of(jdbc.queryForObject(
+	    Sighting sight = jdbc.queryForObject(
 		"SELECT * FROM sightings WHERE sightingId = ?",
 		SIGHTING_MAPPER,
 		sightingId
-	    ));
+	    );
+	    occupyExtraneousSightingFields(sight);
+	    inst = Optional.of(sight);
 	} catch (DataAccessException ex) {
 	    System.out.println(ex.getMessage());
 	    inst = Optional.empty();
@@ -181,12 +183,12 @@ public class SightingDaoDB implements SightingDao {
 		+ "WHERE B.sightingId = ?", 
 		(ResultSet rs, int index) -> {
 		    Location derivedLoc = new Location();
-		    derivedLoc.setId(rs.getInt("locationId"));
-		    derivedLoc.setName(rs.getString("locationName"));
+		    derivedLoc.setId(rs.getInt(            "locationId"));
+		    derivedLoc.setName(rs.getString(       "locationName"));
 		    derivedLoc.setDescription(rs.getString("locationDescription"));
-		    derivedLoc.setAddress(rs.getString("locationAddress"));
-		    derivedLoc.setLatitude(rs.getDouble("locationLatitude"));
-		    derivedLoc.setLongitude(rs.getDouble("locationLongitude"));
+		    derivedLoc.setAddress(rs.getString(    "locationAddress"));
+		    derivedLoc.setLatitude(rs.getDouble(   "locationLatitude"));
+		    derivedLoc.setLongitude(rs.getDouble(  "locationLongitude"));
 		    return derivedLoc;
 		},
 		subject.getId()
@@ -205,10 +207,10 @@ public class SightingDaoDB implements SightingDao {
 		+ "WHERE B.sightingId = ?",
 		(ResultSet rs, int index) -> {
 		    Super sup = new Super();
-		    sup.setId(rs.getInt("superId"));
-		    sup.setName(rs.getString("superName"));
+		    sup.setId(rs.getInt(            "superId"));
+		    sup.setName(rs.getString(       "superName"));
 		    sup.setDescription(rs.getString("superDescription"));
-		    sup.setIsHero(rs.getBoolean("superIsHero"));
+		    sup.setIsHero(rs.getBoolean(    "superIsHero"));
 		    return sup;
 		},
 		subject.getId()
@@ -233,18 +235,17 @@ public class SightingDaoDB implements SightingDao {
 		"SELECT L.*, SI.dateOfSighting "
 		+ "FROM locations L "
 		+ "INNER JOIN sightings SI on L.locationId = SI.locationId "
-		+ "INNER JOIN supers SU ON SI.superId = SU.superId "
-		+ "WHERE SU.superId = ?",
+		+ "WHERE SI.superId = ?",
 		(ResultSet rs, int index) -> {
 		    LocalDate date = rs.getDate("dateOfSighting").toLocalDate();
 
 		    Location location = new Location();
-		    location.setId(rs.getInt("locationId"));
-		    location.setName(rs.getString("locationName"));
+		    location.setId(rs.getInt(            "locationId"));
+		    location.setName(rs.getString(       "locationName"));
 		    location.setDescription(rs.getString("locationDescription"));
-		    location.setAddress(rs.getString("locationAddress"));
-		    location.setLatitude(rs.getDouble("locationLatitude"));
-		    location.setLongitude(rs.getDouble("locationLongitude"));
+		    location.setAddress(rs.getString(    "locationAddress"));
+		    location.setLatitude(rs.getDouble(   "locationLatitude"));
+		    location.setLongitude(rs.getDouble(  "locationLongitude"));
 
 		    return sightings.put(date, location);
 		},
@@ -265,11 +266,11 @@ public class SightingDaoDB implements SightingDao {
 		+ "WHERE OS.superId = ?",
 		(ResultSet rs, int index) -> {
 		    Organization org = new Organization();
-		    org.setId(rs.getInt("organizationId"));
-		    org.setName(rs.getString("organizationName"));
+		    org.setId(rs.getInt(            "organizationId"));
+		    org.setName(rs.getString(       "organizationName"));
 		    org.setDescription(rs.getString("organizationDescription"));
-		    org.setAddress(rs.getString("organizationAddress"));
-		    org.setContact(rs.getString("organizationContact"));
+		    org.setAddress(rs.getString(    "organizationAddress"));
+		    org.setContact(rs.getString(    "organizationContact"));
 		    return org;
 		},
 		subject.getId()
@@ -289,7 +290,7 @@ public class SightingDaoDB implements SightingDao {
 		+ "WHERE B.superId = ?",
 		(ResultSet rs, int index) -> {
 		    Superpower power = new Superpower();
-		    power.setId(rs.getInt("superpowerId"));
+		    power.setId(rs.getInt(     "superpowerId"));
 		    power.setName(rs.getString("superpowerName"));
 		    return power;
 		},

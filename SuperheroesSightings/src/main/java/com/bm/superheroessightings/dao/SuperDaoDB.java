@@ -207,18 +207,17 @@ public class SuperDaoDB implements SuperDao {
 		"SELECT L.*, SI.dateOfSighting "
 		+ "FROM locations L "
 		+ "INNER JOIN sightings SI on L.locationId = SI.locationId "
-		+ "INNER JOIN supers SU ON SI.superId = SU.superId "
-		+ "WHERE SU.superId = ?",
+		+ "WHERE SI.superId = ?",
 		(ResultSet rs, int index) -> {
 		    LocalDate date = rs.getDate("dateOfSighting").toLocalDate();
 
 		    Location location = new Location();
-		    location.setId(rs.getInt("locationId"));
-		    location.setName(rs.getString("locationName"));
+		    location.setId(rs.getInt(            "locationId"));
+		    location.setName(rs.getString(       "locationName"));
 		    location.setDescription(rs.getString("locationDescription"));
-		    location.setAddress(rs.getString("locationAddress"));
-		    location.setLatitude(rs.getDouble("locationLatitude"));
-		    location.setLongitude(rs.getDouble("locationLongitude"));
+		    location.setAddress(rs.getString(    "locationAddress"));
+		    location.setLatitude(rs.getDouble(   "locationLatitude"));
+		    location.setLongitude(rs.getDouble(  "locationLongitude"));
 
 		    return sightings.put(date, location);
 		},
@@ -239,11 +238,11 @@ public class SuperDaoDB implements SuperDao {
 		+ "WHERE OS.superId = ?",
 		(ResultSet rs, int index) -> {
 		    Organization org = new Organization();
-		    org.setId(rs.getInt("organizationId"));
-		    org.setName(rs.getString("organizationName"));
+		    org.setId(rs.getInt(            "organizationId"));
+		    org.setName(rs.getString(       "organizationName"));
 		    org.setDescription(rs.getString("organizationDescription"));
-		    org.setAddress(rs.getString("organizationAddress"));
-		    org.setContact(rs.getString("organizationContact"));
+		    org.setAddress(rs.getString(    "organizationAddress"));
+		    org.setContact(rs.getString(    "organizationContact"));
 		    return org;
 		},
 		subject.getId()
@@ -263,7 +262,7 @@ public class SuperDaoDB implements SuperDao {
 		+ "WHERE B.superId = ?",
 		(ResultSet rs, int index) -> {
 		    Superpower power = new Superpower();
-		    power.setId(rs.getInt("superpowerId"));
+		    power.setId(rs.getInt(     "superpowerId"));
 		    power.setName(rs.getString("superpowerName"));
 		    return power;
 		},

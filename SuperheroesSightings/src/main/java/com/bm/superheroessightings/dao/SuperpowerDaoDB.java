@@ -74,6 +74,10 @@ public class SuperpowerDaoDB implements SuperpowerDao {
 
     @Override
     public Optional<Superpower> createSuperpower(String name) {
+	if (name == null) {
+	    return Optional.empty();
+	}
+
     	Optional<Superpower> instance;
 	GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
 	int rowsUpdated;
@@ -104,6 +108,10 @@ public class SuperpowerDaoDB implements SuperpowerDao {
 
     @Override
     public boolean updateSuperpower(int superpowerId, String name) {
+	if (name == null) {
+	    return false;
+	}	    
+
 	int rowsUpdated;
 	try {
 	    rowsUpdated = jdbc.update(

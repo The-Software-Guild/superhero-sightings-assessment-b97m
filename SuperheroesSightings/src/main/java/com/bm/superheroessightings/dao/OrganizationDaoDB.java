@@ -84,6 +84,10 @@ public class OrganizationDaoDB implements OrganizationDao {
 	String address, 
 	String contact) {
 
+	if (name == null || description == null || address == null || contact == null) {
+	    return Optional.empty();
+	}
+
 	int rowsUpdated;
 	GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
 	try {
@@ -129,6 +133,10 @@ public class OrganizationDaoDB implements OrganizationDao {
 	String description, 
 	String address, 
 	String contact) {
+
+	if (name == null || description == null || address == null || contact == null) {
+	    return false;
+	}
 
 	int rowsUpdated;
 	try {
