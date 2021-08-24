@@ -19,6 +19,12 @@ public interface SightingDao {
      * @return The above list
      */
     public List<Sighting> getSightings();
+    
+    /**
+     * Retrieves a list of the ten most recent sightings 
+     * @return The above list
+     */
+    public List<Sighting> getLatestSightings();
 
     /**
      * Attempts to find a sighting by its id.

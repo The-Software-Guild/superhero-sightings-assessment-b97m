@@ -20,6 +20,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * An implementation of the SuperDao interface
@@ -180,12 +181,89 @@ public class SuperDaoDB implements SuperDao {
     }
 
     @Override
+    @Transactional
     public boolean deleteSuper(int superId) {
 	int rowsUpdated;
 	try {
 	    rowsUpdated = jdbc.update(
+		"DELETE organizationsHaveMembers WHERE superId = ?",
+		superId
+	    );
+	    rowsUpdated += jdbc.update(
+		"DELETE sightings WHERE superId = ?",
+		superId
+	    );
+	    rowsUpdated += jdbc.update(
+		"DELETE supersHaveSuperpowers WHERE superId = ?",
+		superId
+	    );
+	    rowsUpdated += jdbc.update(
 		"DELETE supers WHERE superId = ?",
 		superId
+	    );
+	} catch (DataAccessException ex) {
+	    System.out.println(ex.getMessage());
+	    rowsUpdated = 0;
+	}
+	return rowsUpdated > 0;
+    }
+    
+    @Override
+    public boolean addSuperpowerForSuper(int superId, int superpowerId) {
+	int rowsUpdated;
+	try {
+	    rowsUpdated = jdbc.update(
+		"INSERT INTO supersHaveSuperpowers VALUES (?, ?)",
+		superId,
+		superpowerId
+	    );
+	} catch (DataAccessException ex) {
+	    System.out.println(ex.getMessage());
+	    rowsUpdated = 0;
+	}
+	return rowsUpdated > 0;
+    }
+
+    @Override
+    public boolean removeSuperpowerForSuper(int superId, int superpowerId) {
+	int rowsUpdated;
+	try {
+	    rowsUpdated = jdbc.update(
+		"DELETE supersHaveSuperpowers WHERE superId = ? AND superpowerId = ?",
+		superId,
+		superpowerId
+	    );
+	} catch (DataAccessException ex) {
+	    System.out.println(ex.getMessage());
+	    rowsUpdated = 0;
+	}
+	return rowsUpdated > 0;
+    }
+
+    @Override
+    public boolean addOrganizationForSuper(int superId, int organizationId) {
+	int rowsUpdated;
+	try {
+	    rowsUpdated = jdbc.update(
+		"INSERT INTO organzationsHaveMembers VALUES (?, ?)",
+		superId,
+		organizationId
+	    );
+	} catch (DataAccessException ex) {
+	    System.out.println(ex.getMessage());
+	    rowsUpdated = 0;
+	}
+	return rowsUpdated > 0;
+    }
+
+    @Override
+    public boolean removeOrganizationForSuper(int superId, int organizationId) {
+	int rowsUpdated;
+	try {
+	    rowsUpdated = jdbc.update(
+		"DELETE organizationsHaveMembers WHERE superId = ? AND organizationId = ?",
+		superId,
+		organizationId
 	    );
 	} catch (DataAccessException ex) {
 	    System.out.println(ex.getMessage());
@@ -274,4 +352,5 @@ public class SuperDaoDB implements SuperDao {
 	}
 	subject.setSuperpowers(superpowers);
     }
+
 }

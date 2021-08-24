@@ -1,13 +1,52 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns="http:ww/www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http:ww/www.w3.org/1999/xhtml" lang="en">
     <head>
-        <title>TODO supply a title</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Superhero Sightings | Home</title>
+
+	<!-- custom css -->
 	<link th:href="@{/common-styles.css}" rel="stylesheet">
-	<script th:src="@{/custom.js}"></script> 
+
+	<!-- jQuery 3.6.0 via CDN -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+	<script th:src="@{/home.js}"></script> 
     </head>
     <body>
-        <div>TODO write content</div>
+	<header>
+	    <h1>Superhero Sightings</h1>
+	</header>
+	<main>
+	    <div id="nav-links">
+		<a href="super">Superheroes and Villains</a>
+		<a href="superpower">Superpowers</a>
+		<a href="organization">Organizations</a>
+		<a href="sighting">Sightings</a>
+	    </div>
+	    <p id="intro-par">
+		The purpose of this site is to catalog information about 
+		all things related to superheroes and villains. This 
+		includes the powers they have, the organizations they're
+		a part of, and, most importantly, where they've been
+		reported to have appeared and when! Us common folk, with
+		our comparatively boring lives, don't often get a chance 
+		to see these superheroes and villains in action, so get 
+		recording!
+	    </p>
+	    <hr />
+	    <h2>Latest Sightings</h2>
+	    <div id="latest-sightings"> 
+		<div class="sighting" th:each="sighting : ${latestSightings}">
+		    <div class="sighting-super">
+			<h3 th:text="${sighting.sightedSuper.name}">Super</h3>
+			<p>-</p>
+			<h4 th:text="${sighting.sightingLocation.name}">Location</h4>
+		    </div>
+		    <a class="sighting-more" th:href="'sighting/' + ${sighting.id}">More Info</a>
+		</div>
+	    </div>
+	</main>
     </body>
 </html>

@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * ... 
@@ -163,10 +164,15 @@ public class LocationDaoDB implements LocationDao {
     }
 
     @Override
+    @Transactional
     public boolean deleteLocation(int locationId) {
 	int rowsUpdated;
 	try {
 	    rowsUpdated = jdbc.update(
+		"DELETE sightings WHERE locationId = ?",
+		locationId
+	    );
+	    rowsUpdated += jdbc.update(
 		"DELETE locations WHERE locationId = ?",
 		locationId
 	    );

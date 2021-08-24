@@ -14,6 +14,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * An implementation of the SuperpowerDao interface that interacts with a 
@@ -127,10 +128,15 @@ public class SuperpowerDaoDB implements SuperpowerDao {
     }
 
     @Override
+    @Transactional
     public boolean deleteSuperpower(int superpowerId) {
 	int rowsUpdated;
 	try {
 	    rowsUpdated = jdbc.update(
+		"DELETE supersHaveSuperpowers WHERE superpowerId = ?",
+		superpowerId
+	    );
+	    rowsUpdated += jdbc.update(
 		"DELETE superpowers WHERE superpowerId = ?",
 		superpowerId
 	    );

@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +30,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * date: Aug 23, 2021
  */
 @Controller
+@CrossOrigin()
 @RequestMapping("superhero-sightings")
 public class PrimaryController {
 
@@ -39,7 +42,8 @@ public class PrimaryController {
     }
 
     @GetMapping("home")
-    public String homePage() {
+    public String homePage(Model mod) {
+	mod.addAttribute("latestSightings", service.getLatestSightings());
 	return "home.html";
     }
     
@@ -53,15 +57,16 @@ public class PrimaryController {
 	    );
 	}
 
-	boolean success = service.addSighting(
+	var possSighting = service.addSighting(
 	    entry.getSuperId(), 
 	    entry.getLocationId(), 
 	    possDate.get()
 	);
 
-	if (success) {
-	    return new ResponseEntity(HttpStatus.OK);
+	if (possSighting.isPresent()) {
+	    return new ResponseEntity(possSighting.get(), HttpStatus.OK);
 	}
+
 	return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -77,7 +82,7 @@ public class PrimaryController {
 	return service.getSightingLocationsForSuper(superId);
     }
 
-    @GetMapping("sighting/{sightingDate}")
+    @GetMapping("sighting/date/{sightingDate}")
     public ResponseEntity sightingsByDate(@PathVariable String sightingDate) {
 	Optional<LocalDate> possDate = service.parsedDate(sightingDate);
 	if (possDate.isEmpty()) {

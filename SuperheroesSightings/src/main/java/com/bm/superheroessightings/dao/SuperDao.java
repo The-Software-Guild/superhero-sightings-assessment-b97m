@@ -84,4 +84,48 @@ public interface SuperDao {
      * @return The aforementioned instance
      */
     public boolean deleteSuper(int superId);
+
+    /**
+     * Attempts to add a superpower for the super
+     * 
+     * The value returned depends on the success of the update operations.
+     * 
+     * @param superId
+     * @param superpowerId
+     * @return The aforementioned value
+     */
+    public boolean addSuperpowerForSuper(int superId, int superpowerId);
+
+    /**
+     * Attempts to remove a superpower from the super
+     * 
+     * The value returned depends on the success of the deletion operation
+     * 
+     * @param superId
+     * @param superpowerId
+     * @return The above value
+     */
+    public boolean removeSuperpowerForSuper(int superId, int superpowerId);
+
+    /**
+     * Attempts to add a superpower for the super
+     * 
+     * The value returned depends on the success of the update operations.
+     * 
+     * @param superId
+     * @param organizationId
+     * @return The aforementioned value
+     */
+    public boolean addOrganizationForSuper(int superId, int organizationId);
+
+    /**
+     * Attempts to remove a superpower from the super
+     * 
+     * The value returned depends on the success of the deletion operation
+     * 
+     * @param superId
+     * @param organizationId
+     * @return The above value
+     */
+    public boolean removeOrganizationForSuper(int superId, int organizationId);
 }

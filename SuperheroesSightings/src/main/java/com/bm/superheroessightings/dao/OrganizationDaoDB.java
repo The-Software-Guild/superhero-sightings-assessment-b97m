@@ -19,6 +19,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * ... 
@@ -161,10 +162,15 @@ public class OrganizationDaoDB implements OrganizationDao {
     }
 
     @Override
+    @Transactional
     public boolean deleteOrganization(int organizationId) {
 	int rowsUpdated;
 	try {
 	    rowsUpdated = jdbc.update(
+		"DELETE organizationsHaveMembers WHERE organizationId = ?",
+		organizationId
+	    );
+	    rowsUpdated += jdbc.update(
 		"DELETE organizations WHERE organizationId = ?",
 		organizationId
 	    );
@@ -174,5 +180,4 @@ public class OrganizationDaoDB implements OrganizationDao {
 	}
 	return rowsUpdated > 0;
     }
-
 }

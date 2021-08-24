@@ -64,6 +64,25 @@ public class SightingDaoDB implements SightingDao {
     }
 
     @Override
+    public List<Sighting> getLatestSightings() {
+	List<Sighting> sightings;
+	try {
+	    sightings = jdbc.query(
+		"SELECT * FROM sightings "
+		+ "ORDER BY dateOfSighting DESC "
+		+ "LIMIT 10",
+		SIGHTING_MAPPER
+	    );
+	} catch (DataAccessException ex) {
+	    System.out.println(ex.getMessage());
+	    sightings = new LinkedList<>();
+	}
+
+	sightings.forEach(sighting -> occupyExtraneousSightingFields(sighting));
+	return sightings;
+    }
+
+    @Override
     public Optional<Sighting> getSightingById(int sightingId) {
 	Optional<Sighting> inst;
 	try {
@@ -302,4 +321,5 @@ public class SightingDaoDB implements SightingDao {
 	}
 	subject.setSuperpowers(superpowers);
     }
+
 }

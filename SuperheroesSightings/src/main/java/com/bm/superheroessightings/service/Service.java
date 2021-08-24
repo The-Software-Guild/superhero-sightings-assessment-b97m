@@ -52,18 +52,27 @@ public class Service {
     }
     
     /**
-     * Attempts to add a sighting for the given superhero/villain, location, 
-     * and date. The value depends on the success of this operation
+     * Attempts to add a sighting with the indicated superhero/villain,
+     * location, and date. If successful, an instance with the created sighting
+     * is returned.
      * 
      * @param superId
      * @param locationId
      * @param date
-     * @return The aforementioned value
+     * @return The above instance
      */
-    public boolean addSighting(int superId, int locationId, LocalDate date) {
-	return sightingDao.createSighting(superId, locationId, date).isPresent();
+    public Optional<Sighting> addSighting(int superId, int locationId, LocalDate date) {
+	return sightingDao.createSighting(superId, locationId, date);
     }
 
+    /**
+     * A list of the latest sightings.
+     * 
+     * @return The above list
+     */
+    public List<Sighting> getLatestSightings() {
+	return sightingDao.getLatestSightings();
+    }
 
     /**
      * Retrieves a list of all the superheroes that have been sighted
