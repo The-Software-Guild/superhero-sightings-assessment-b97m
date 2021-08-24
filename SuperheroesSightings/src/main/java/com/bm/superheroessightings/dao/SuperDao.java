@@ -1,7 +1,6 @@
 package com.bm.superheroessightings.dao;
 
 import com.bm.superheroessightings.controller.dto.Super;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,4 +40,48 @@ public interface SuperDao {
      * @return The aforementioned instance
      */
     public Optional<Super> getSuperById(int superId);
+    
+    /**
+     * Retrieves a list of all the superheroes/villains
+     * 
+     * @return The aforementioned list
+     */
+    public List<Super> getSupers();
+
+    /**
+     * Attempts to create a new superhero with the following properties
+     * 
+     * If this creation process succeeds, an instance with the created
+     * Super is returned. Otherwise, an empty instance is returned.
+     * 
+     * @param name
+     * @param description
+     * @param isHero 
+     * @return the aforementioned instance
+     */
+    public Optional<Super> createSuper(String name, String description, boolean isHero);
+
+    /**
+     * Attempts to update the super with the corresponding id 
+     * with updated name, description, and isHero status
+     * 
+     * The value returned depends on the success of the update
+     * 
+     * @param superId
+     * @param name
+     * @param description
+     * @param isHero
+     * @return The aforementioned value
+     */
+    public boolean updateSuper(int superId, String name, String description, boolean isHero);
+
+    /**
+     * Attempts to delete the super associated with the id.
+     * 
+     * The value returned depends on the success of the deletion
+     * 
+     * @param superId
+     * @return The aforementioned instance
+     */
+    public boolean deleteSuper(int superId);
 }

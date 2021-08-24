@@ -3,7 +3,7 @@ package com.bm.superheroessightings.controller;
 import com.bm.superheroessightings.controller.dto.Location;
 import com.bm.superheroessightings.controller.dto.Organization;
 import com.bm.superheroessightings.controller.dto.Super;
-import com.bm.superheroessightings.dao.SightingEntry;
+import com.bm.superheroessightings.controller.dto.SightingEntry;
 import com.bm.superheroessightings.service.Service;
 import java.time.LocalDate;
 import java.util.List;

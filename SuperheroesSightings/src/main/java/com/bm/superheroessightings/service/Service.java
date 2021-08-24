@@ -61,7 +61,7 @@ public class Service {
      * @return The aforementioned value
      */
     public boolean addSighting(int superId, int locationId, LocalDate date) {
-	return sightingDao.addSighting(superId, locationId, date);
+	return sightingDao.createSighting(superId, locationId, date);
     }
 
 

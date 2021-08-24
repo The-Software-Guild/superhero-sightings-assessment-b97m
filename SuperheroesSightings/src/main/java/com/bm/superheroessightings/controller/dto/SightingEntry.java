@@ -1,4 +1,4 @@
-package com.bm.superheroessightings.dao;
+package com.bm.superheroessightings.controller.dto;
 
 import java.time.LocalDate;
 

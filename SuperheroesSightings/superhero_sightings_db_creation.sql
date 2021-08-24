@@ -46,10 +46,11 @@ CREATE TABLE organizations (
 );
 
 CREATE TABLE sightings (
+	sightingId INT AUTO_INCREMENT,
 	superId INT NOT NULL,
     locationId INT NOT NULL,
     dateOfSighting DATE NOT NULL,
-	CONSTRAINT PK_sightings PRIMARY KEY (superId, locationId, dateOfSighting),
+	CONSTRAINT PK_sightings PRIMARY KEY (sightingId),
     CONSTRAINT FK_sightings_supers FOREIGN KEY (superId)
 		REFERENCES supers (superId),
 	CONSTRAINT FK_sightings_locations FOREIGN KEY (locationId)

@@ -11,9 +11,18 @@ import java.util.Objects;
  * date: Aug 23, 2021
  */
 public class Sighting {
+    private int id;
     private Super sightedSuper;
     private Location sightingLocation;
     private LocalDate sightingDate;
+
+    public int getId() {
+	return id;
+    }
+
+    public void setId(int id) {
+	this.id = id;
+    }
 
     public Super getSightedSuper() {
 	return sightedSuper;
@@ -41,7 +50,8 @@ public class Sighting {
 
     @Override
     public int hashCode() {
-	int hash = 5;
+	int hash = 7;
+	hash = 41 * hash + this.id;
 	hash = 41 * hash + Objects.hashCode(this.sightedSuper);
 	hash = 41 * hash + Objects.hashCode(this.sightingLocation);
 	hash = 41 * hash + Objects.hashCode(this.sightingDate);
@@ -60,6 +70,9 @@ public class Sighting {
 	    return false;
 	}
 	final Sighting other = (Sighting) obj;
+	if (this.id != other.id) {
+	    return false;
+	}
 	if (!Objects.equals(this.sightedSuper, other.sightedSuper)) {
 	    return false;
 	}
