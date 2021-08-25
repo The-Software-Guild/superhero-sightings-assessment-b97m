@@ -167,11 +167,11 @@ public class OrganizationDaoDB implements OrganizationDao {
 	int rowsUpdated;
 	try {
 	    rowsUpdated = jdbc.update(
-		"DELETE organizationsHaveMembers WHERE organizationId = ?",
+		"DELETE FROM organizationsHaveMembers WHERE organizationId = ?",
 		organizationId
 	    );
 	    rowsUpdated += jdbc.update(
-		"DELETE organizations WHERE organizationId = ?",
+		"DELETE FROM organizations WHERE organizationId = ?",
 		organizationId
 	    );
 	} catch (DataAccessException ex) {

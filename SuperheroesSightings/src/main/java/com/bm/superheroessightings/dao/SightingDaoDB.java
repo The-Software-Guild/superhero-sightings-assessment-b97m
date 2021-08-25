@@ -179,7 +179,7 @@ public class SightingDaoDB implements SightingDao {
 	int rowsUpdated;
 	try {
 	    rowsUpdated = jdbc.update(
-		"DELETE sightings WHERE sightingId = ?", 
+		"DELETE FROM sightings WHERE sightingId = ?", 
 		sightingId
 	    );
 	} catch (DataAccessException ex) {

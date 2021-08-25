@@ -169,11 +169,11 @@ public class LocationDaoDB implements LocationDao {
 	int rowsUpdated;
 	try {
 	    rowsUpdated = jdbc.update(
-		"DELETE sightings WHERE locationId = ?",
+		"DELETE FROM sightings WHERE locationId = ?",
 		locationId
 	    );
 	    rowsUpdated += jdbc.update(
-		"DELETE locations WHERE locationId = ?",
+		"DELETE FROM locations WHERE locationId = ?",
 		locationId
 	    );
 	} catch (DataAccessException ex) {

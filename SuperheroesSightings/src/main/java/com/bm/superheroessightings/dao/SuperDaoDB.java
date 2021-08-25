@@ -186,19 +186,19 @@ public class SuperDaoDB implements SuperDao {
 	int rowsUpdated;
 	try {
 	    rowsUpdated = jdbc.update(
-		"DELETE organizationsHaveMembers WHERE superId = ?",
+		"DELETE FROM organizationsHaveMembers WHERE superId = ?",
 		superId
 	    );
 	    rowsUpdated += jdbc.update(
-		"DELETE sightings WHERE superId = ?",
+		"DELETE FROM sightings WHERE superId = ?",
 		superId
 	    );
 	    rowsUpdated += jdbc.update(
-		"DELETE supersHaveSuperpowers WHERE superId = ?",
+		"DELETE FROM supersHaveSuperpowers WHERE superId = ?",
 		superId
 	    );
 	    rowsUpdated += jdbc.update(
-		"DELETE supers WHERE superId = ?",
+		"DELETE FROM supers WHERE superId = ?",
 		superId
 	    );
 	} catch (DataAccessException ex) {
@@ -229,7 +229,7 @@ public class SuperDaoDB implements SuperDao {
 	int rowsUpdated;
 	try {
 	    rowsUpdated = jdbc.update(
-		"DELETE supersHaveSuperpowers WHERE superId = ? AND superpowerId = ?",
+		"DELETE FROM supersHaveSuperpowers WHERE superId = ? AND superpowerId = ?",
 		superId,
 		superpowerId
 	    );
@@ -245,9 +245,9 @@ public class SuperDaoDB implements SuperDao {
 	int rowsUpdated;
 	try {
 	    rowsUpdated = jdbc.update(
-		"INSERT INTO organzationsHaveMembers VALUES (?, ?)",
-		superId,
-		organizationId
+		"INSERT INTO organizationsHaveMembers VALUES (?, ?)",
+		organizationId,
+		superId
 	    );
 	} catch (DataAccessException ex) {
 	    System.out.println(ex.getMessage());
@@ -261,7 +261,7 @@ public class SuperDaoDB implements SuperDao {
 	int rowsUpdated;
 	try {
 	    rowsUpdated = jdbc.update(
-		"DELETE organizationsHaveMembers WHERE superId = ? AND organizationId = ?",
+		"DELETE FROM organizationsHaveMembers WHERE superId = ? AND organizationId = ?",
 		superId,
 		organizationId
 	    );
@@ -313,7 +313,8 @@ public class SuperDaoDB implements SuperDao {
 		"SELECT O.*"
 		+ "FROM organizations O "
 		+ "INNER JOIN organizationsHaveMembers OS ON O.organizationId = OS.organizationId "
-		+ "WHERE OS.superId = ?",
+		+ "WHERE OS.superId = ? "
+		+ "ORDER BY O.organizationName",
 		(ResultSet rs, int index) -> {
 		    Organization org = new Organization();
 		    org.setId(rs.getInt(            "organizationId"));
@@ -337,7 +338,8 @@ public class SuperDaoDB implements SuperDao {
 	    superpowers = jdbc.query(
 		"SELECT A.* "
 		+ "FROM superpowers A INNER JOIN supersHaveSuperpowers B ON a.superpowerId = B.superpowerId "
-		+ "WHERE B.superId = ?",
+		+ "WHERE B.superId = ? "
+		+ "ORDER BY superpowerName",
 		(ResultSet rs, int index) -> {
 		    Superpower power = new Superpower();
 		    power.setId(rs.getInt(     "superpowerId"));

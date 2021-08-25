@@ -8,9 +8,6 @@
 
 	<!-- custom css -->
 	<link th:href="@{/super.css}" rel="stylesheet">
-
-	<!-- jQuery 3.6.0 via CDN -->
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     </head>
     <body>
 	<header>
@@ -37,6 +34,12 @@
 			    <h3 th:text="${power.name}">Power</h3>
 			</div>
 		    </div>
+		    <form th:action="${super.id} + '/addPower'" method="POST">
+			<select name="powerIdStr">
+			    <option th:each="power : ${powers}" th:value="${power.id}" th:text="${power.name}">power</option>
+			</select>
+			<button type="submit">Add Superpower</button>
+		    </form>
 		</div>
 		<div class="supers-info-orgs">
 		    <h2>Organizations</h2>
@@ -45,8 +48,15 @@
 			    <h3 th:text="${org.name}">Org</h3> 
 			</div>
 		    </div>
+		    <form th:action="${super.id} + '/addOrg'" method="POST">
+			<select name="organizationIdStr">
+			    <option th:each="org : ${orgs}" th:value="${org.id}" th:text="${org.name}">Org</option>
+			</select>
+			<button type="submit">Add Organization</button>
+		    </form>
 		</div>
 	    </div>
+	    <a th:href="${super.id} + '/edit'">Edit</a>
 	</main>
     </body>
 </html>

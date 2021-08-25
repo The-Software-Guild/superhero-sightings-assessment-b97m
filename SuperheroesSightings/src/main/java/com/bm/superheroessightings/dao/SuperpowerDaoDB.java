@@ -45,7 +45,7 @@ public class SuperpowerDaoDB implements SuperpowerDao {
     	List<Superpower> powers;
 	try {
 	    powers = jdbc.query(
-		"SELECT * FROM superpowers",
+		"SELECT * FROM superpowers ORDER BY superpowerName",
 		SUPERPOWER_MAPPER
 	    );
 	} catch (DataAccessException ex) {
@@ -133,11 +133,11 @@ public class SuperpowerDaoDB implements SuperpowerDao {
 	int rowsUpdated;
 	try {
 	    rowsUpdated = jdbc.update(
-		"DELETE supersHaveSuperpowers WHERE superpowerId = ?",
+		"DELETE FROM supersHaveSuperpowers WHERE superpowerId = ?",
 		superpowerId
 	    );
 	    rowsUpdated += jdbc.update(
-		"DELETE superpowers WHERE superpowerId = ?",
+		"DELETE FROM superpowers WHERE superpowerId = ?",
 		superpowerId
 	    );
 	} catch (DataAccessException ex) {

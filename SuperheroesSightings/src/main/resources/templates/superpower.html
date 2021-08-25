@@ -4,14 +4,14 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <title>Superhero Sightings | Superheroes and Villains</title>
+        <title>Superhero Sightings | Superpowers</title>
 
 	<!-- custom css -->
-	<link th:href="@{/super.css}" rel="stylesheet">
+	<link th:href="@{/superpower.css}" rel="stylesheet">
     </head>
     <body>
 	<header>
-	    <h1>Superheroes and Villains</h1>
+	    <h1>Superpowers</h1>
 	</header>
 	<main>
 	    <div id="nav-links">
@@ -21,23 +21,16 @@
 		<a href="organization">Organizations</a>
 		<a href="sighting">Sightings</a>
 	    </div>
-	    <div id="supers-content">
-		<div class="supers-content-block" th:each="super : ${supers}">
-		    <h2 th:text="${super.name}">Super</h2> 
-		    <a th:href="'super/' + ${super.id}">More Information</a>
-		</div>
+	    <div id="superpowers-content">
+		<div class="superpowers-content-block" th:each="power : ${powers}">
+		    <h2 th:text="${power.name}">Name</h2> 
+		    <a th:href="'superpower/' + ${power.id}">More information</a>
+		</div> 
 	    </div>
-	    <form action="super" method="POST">
-		<label for="name">Name</label>
-		<input type="text" name="name" />
-
-		<label for="description">Description</label>
-		<input type="text" name="description" />
-
-		<label for="isHero">Is Hero</label>
-		<input type="checkbox" name="isHero" />
-
-		<button type="submit">Add new Hero/Villain</button>
+	    <form action="superpower" method="POST">
+		<label for="superpowerName">Name</label>
+		<input name="superpowerName"/>
+		<button type="submit">Add new superpower</button>
 	    </form>
 	    <ul id="creation-errors">
 		<li class="creation-errors-item" th:each="error : ${errors}" th:text="${error}">

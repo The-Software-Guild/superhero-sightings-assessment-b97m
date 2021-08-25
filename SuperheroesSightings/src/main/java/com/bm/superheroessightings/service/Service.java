@@ -4,8 +4,11 @@ import com.bm.superheroessightings.controller.dto.Location;
 import com.bm.superheroessightings.controller.dto.Organization;
 import com.bm.superheroessightings.controller.dto.Sighting;
 import com.bm.superheroessightings.controller.dto.Super;
+import com.bm.superheroessightings.controller.dto.Superpower;
+import com.bm.superheroessightings.dao.OrganizationDao;
 import com.bm.superheroessightings.dao.SightingDao;
 import com.bm.superheroessightings.dao.SuperDao;
+import com.bm.superheroessightings.dao.SuperpowerDao;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,11 +28,20 @@ public class Service {
      
     private SuperDao superDao;
     private SightingDao sightingDao;
+    private OrganizationDao organizationDao;
+    private SuperpowerDao superpowerDao;
 
     @Autowired
-    public Service(SuperDao superDao, SightingDao sightingDao) {
+    public Service(
+	SuperDao superDao, 
+	SightingDao sightingDao, 
+	OrganizationDao organizationDao,
+	SuperpowerDao superpowerDao) {
+
 	this.superDao = superDao;
 	this.sightingDao = sightingDao;
+	this.organizationDao = organizationDao;
+	this.superpowerDao = superpowerDao;
     }
 
     /**
@@ -150,5 +162,49 @@ public class Service {
      */
     public Optional<Super> getSuperById(int superId) {
 	return superDao.getSuperById(superId);
+    }
+
+    public Optional<Super> createSuper(String name, String description, boolean isHero) {
+    	return superDao.createSuper(name, description, isHero);
+    }
+
+    public List<Organization> getOrganizations() {
+    	return organizationDao.getOrganizations();
+    }
+
+    public boolean addOrganizationForSuper(int superId, int organizationId) {
+	return superDao.addOrganizationForSuper(superId, organizationId);
+    }
+
+    public List<Superpower> getSuperpowers() {
+	return superpowerDao.getSuperpowers();
+    }
+
+    public boolean addSuperpowerForSuper(int superId, int superpowerId) {
+	return superDao.addSuperpowerForSuper(superId, superpowerId);
+    }
+
+    public boolean updateSuper(int superId, String name, String description, boolean isHero) {
+	return superDao.updateSuper(superId, name, description, isHero);
+    }
+
+    public boolean deleteSuper(int superId) {
+	return superDao.deleteSuper(superId);
+    }
+
+    public Optional<Superpower> addSuperpower(String name) {
+	return superpowerDao.createSuperpower(name);
+    }
+
+    public Optional<Superpower> getSuperpowerById(int superpowerId) {
+	return superpowerDao.getSuperpowerById(superpowerId);
+    }
+
+    public boolean updateSuperpower(int superpowerId, String superpowerName) {
+	return superpowerDao.updateSuperpower(superpowerId, superpowerName);
+    }
+
+    public boolean deleteSuperpower(int superpowerId) {
+	return superpowerDao.deleteSuperpower(superpowerId);
     }
 }
