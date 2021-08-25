@@ -7,12 +7,7 @@
         <title>Superhero Sightings | Home</title>
 
 	<!-- custom css -->
-	<link th:href="@{/common-styles.css}" rel="stylesheet">
-
-	<!-- jQuery 3.6.0 via CDN -->
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-
-	<script th:src="@{/home.js}"></script> 
+	<link th:href="@{/home.css}" rel="stylesheet">
     </head>
     <body>
 	<header>
@@ -20,6 +15,7 @@
 	</header>
 	<main>
 	    <div id="nav-links">
+		<a href="home">Home</a>
 		<a href="super">Superheroes and Villains</a>
 		<a href="superpower">Superpowers</a>
 		<a href="organization">Organizations</a>
@@ -43,6 +39,8 @@
 			<h3 th:text="${sighting.sightedSuper.name}">Super</h3>
 			<p>-</p>
 			<h4 th:text="${sighting.sightingLocation.name}">Location</h4>
+			<p>-</p>
+			<h4 th:text="${sighting.sightingDate}">Date</h4>
 		    </div>
 		    <a class="sighting-more" th:href="'sighting/' + ${sighting.id}">More Info</a>
 		</div>

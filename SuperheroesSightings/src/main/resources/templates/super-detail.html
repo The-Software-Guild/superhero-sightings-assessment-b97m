@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http:ww/www.w3.org/1999/xhtml" lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Superhero Sightings | Superheroes Detailed</title>
+
+	<!-- custom css -->
+	<link th:href="@{/super.css}" rel="stylesheet">
+
+	<!-- jQuery 3.6.0 via CDN -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    </head>
+    <body>
+	<header>
+	    <h1>Superheroes and Villains</h1>
+	</header>
+	<main>
+	    <div id="nav-links">
+		<a href="../home">Home</a>
+		<a href="../super">Superheroes and Villains</a>
+		<a href="../superpower">Superpowers</a>
+		<a href="../organization">Organizations</a>
+		<a href="../sighting">Sightings</a>
+	    </div>
+	    <div id="supers-info">
+		<div class="supers-info-init">
+		    <h2 th:text="${super.name} + ' | HERO'" th:if="${super.isHero}">Super</h2>
+		    <h2 th:text="${super.name} + ' | VILLAIN'" th:if="${!super.isHero}">Super</h2>
+		    <p th:text="${super.description}">Desc</p>
+		</div>	
+		<div class="supers-info-powers">
+		    <h2>Superpowers</h2>
+		    <div class="supers-info-powers-list">
+			<div class="supers-info-powers-list-item" th:each="power : ${super.superpowers}">
+			    <h3 th:text="${power.name}">Power</h3>
+			</div>
+		    </div>
+		</div>
+		<div class="supers-info-orgs">
+		    <h2>Organizations</h2>
+		    <div class="supers-info-orgs-list">
+			<div class="supers-info-orgs-list-item" th:each="org : ${super.organizations}">
+			    <h3 th:text="${org.name}">Org</h3> 
+			</div>
+		    </div>
+		</div>
+	    </div>
+	</main>
+    </body>
+</html>

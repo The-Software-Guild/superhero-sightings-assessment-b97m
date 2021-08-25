@@ -41,12 +41,40 @@ public class PrimaryController {
 	this.service = service;
     }
 
+    /*
+    -- HOME PAGE --
+    */
     @GetMapping("home")
     public String homePage(Model mod) {
 	mod.addAttribute("latestSightings", service.getLatestSightings());
 	return "home.html";
     }
-    
+
+    /*
+    -- SUPER PAGE
+    */
+    @GetMapping("super")
+    public String superPage(Model mod) {
+    	mod.addAttribute("supers", service.getSupers());
+	return "super.html";
+    }
+
+    /*
+    -- SUPER DETAILS
+    */
+    @GetMapping("super/{superId}")
+    public String superDetailPage(Model mod, @PathVariable int superId) {
+    	String retrPage;
+	var possSuper = service.getSuperById(superId);
+	if (possSuper.isPresent()) {
+	    mod.addAttribute("super", possSuper.get());
+	    retrPage = "super-detail";
+	} else {
+	    retrPage = "super";
+	}
+	return retrPage;
+    }
+    /*
     @PostMapping("sighting")
     public ResponseEntity addSighting(@RequestBody SightingEntry entry) {
 	Optional<LocalDate> possDate = service.parsedDate(entry.getDateStr());
@@ -106,4 +134,5 @@ public class PrimaryController {
     public List<Organization> organizationsOfHero(@PathVariable int superId) {
 	return service.getOrganizationsOfSuper(superId);
     }
+    */
 }

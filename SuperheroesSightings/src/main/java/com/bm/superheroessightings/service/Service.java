@@ -136,4 +136,19 @@ public class Service {
 	}
 	return new LinkedList<>();
     }
+
+    /**
+     * Retrieves a list of all supers
+     * @return The above list
+     */
+    public List<Super> getSupers() {
+	return superDao.getSupers();
+    }
+
+    /**
+     * Retrieves the super corresponding to this id
+     */
+    public Optional<Super> getSuperById(int superId) {
+	return superDao.getSuperById(superId);
+    }
 }

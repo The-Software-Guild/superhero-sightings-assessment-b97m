@@ -26,13 +26,13 @@ header h1 {
     height: 41px;
 }
 
-#nav-links a {
+a {
     text-decoration: none;
     font-size: 1em;
     transition: all 1s cubic-bezier(0.16, 0.91, 0.19, 1.01);
 }
 
-#nav-links a:hover {
+a:hover, a:focus {
     font-size: 1.2em;
 }
 
@@ -78,8 +78,16 @@ with their heights set to 0
     border: 1px solid black;
 }
 
+.sighting-super h3 {
+    font-size: 1.5em;
+}
+
+.sighting-super h4 {
+    font-size: 1.2em;
+}
+
 .sighting-more {
     border: 1px solid black;
-    font-size: 1.2em;
-    padding-top: 0.2em;
+    padding-top: 1.2em;
+    text-decoration: none;
 }
