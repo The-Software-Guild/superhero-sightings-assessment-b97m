@@ -26,6 +26,8 @@
 		<div class="locations-content-block" th:each="location : ${locations}">
 		    <h2 th:text="${location.name}">Super</h2> 
 		    <a th:href="'location/' + ${location.id}">More Information</a>
+		    <a th:href="'location/' + ${location.id} + '/edit'">Edit</a>
+		    <a th:href="'location/' + ${location.id} + '/delete-confirm'">Delete</a>
 		</div>
 	    </div>
 	    <form action="location" method="POST">

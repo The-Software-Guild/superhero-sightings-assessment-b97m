@@ -26,6 +26,8 @@
 		<div class="organizations-content-block" th:each="org : ${orgs}">
 		    <h2 th:text="${org.name}">Super</h2> 
 		    <a th:href="'organization/' + ${org.id}">More Information</a>
+		    <a th:href="'organization/' + ${org.id} + '/edit'">Edit</a>
+		    <a th:href="'organization/' + ${org.id} + '/delete-confirm'">Delete</a>
 		</div>
 	    </div>
 	    <form action="organization" method="POST">

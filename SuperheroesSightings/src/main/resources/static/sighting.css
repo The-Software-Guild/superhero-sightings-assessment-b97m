@@ -61,7 +61,7 @@ select:hover, select:focus {
     padding: 1em;
     border: 1px solid black;
     display: grid;
-    grid-template-rows: 2fr 1fr;
+    grid-template-rows: 2fr 1fr 1fr;
     grid-row-gap: 1em;
 }
 

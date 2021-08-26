@@ -32,6 +32,8 @@
 			<h3 th:text="${sighting.sightingDate}">Date</h3>
 		    </div>
 		    <a th:href="'sighting/' + ${sighting.id}">More Info</a>
+		    <a th:href="'sighting/' + ${sighting.id} + '/edit'">Edit</a>
+		    <a th:href="'sighting/' + ${sighting.id} + '/delete-confirm'">Delete</a>
 		</div>
 	    </div>
 	    <form action="sighting" method="POST">

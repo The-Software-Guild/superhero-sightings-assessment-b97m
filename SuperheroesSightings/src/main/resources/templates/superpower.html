@@ -26,6 +26,8 @@
 		<div class="superpowers-content-block" th:each="power : ${powers}">
 		    <h2 th:text="${power.name}">Name</h2> 
 		    <a th:href="'superpower/' + ${power.id}">More information</a>
+		    <a th:href="'superpower/' + ${power.id} + '/edit'">Edit</a>
+		    <a th:href="'superpower/' + ${power.id} + '/delete-confirm'">Delete</a>
 		</div> 
 	    </div>
 	    <form action="superpower" method="POST">

@@ -26,6 +26,8 @@
 		<div class="supers-content-block" th:each="super : ${supers}">
 		    <h2 th:text="${super.name}">Super</h2> 
 		    <a th:href="'super/' + ${super.id}">More Information</a>
+		    <a th:href="'super/' + ${super.id} + '/edit'">Edit</a>
+		    <a th:href="'super/' + ${super.id} + '/delete-confirm'">Delete</a>
 		</div>
 	    </div>
 	    <form action="super" method="POST">

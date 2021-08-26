@@ -47,7 +47,7 @@ a:hover, a:focus {
     padding: 1em;
     border: 1px solid black;
     display: grid;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
     grid-row-gap: 1em;
 }
 
