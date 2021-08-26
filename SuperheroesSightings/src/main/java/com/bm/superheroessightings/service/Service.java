@@ -5,6 +5,7 @@ import com.bm.superheroessightings.controller.dto.Organization;
 import com.bm.superheroessightings.controller.dto.Sighting;
 import com.bm.superheroessightings.controller.dto.Super;
 import com.bm.superheroessightings.controller.dto.Superpower;
+import com.bm.superheroessightings.dao.LocationDao;
 import com.bm.superheroessightings.dao.OrganizationDao;
 import com.bm.superheroessightings.dao.SightingDao;
 import com.bm.superheroessightings.dao.SuperDao;
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -30,18 +32,21 @@ public class Service {
     private SightingDao sightingDao;
     private OrganizationDao organizationDao;
     private SuperpowerDao superpowerDao;
+    private LocationDao locationDao;
 
     @Autowired
     public Service(
 	SuperDao superDao, 
 	SightingDao sightingDao, 
 	OrganizationDao organizationDao,
-	SuperpowerDao superpowerDao) {
+	SuperpowerDao superpowerDao,
+	LocationDao locationDao) {
 
 	this.superDao = superDao;
 	this.sightingDao = sightingDao;
 	this.organizationDao = organizationDao;
 	this.superpowerDao = superpowerDao;
+	this.locationDao = locationDao;
     }
 
     /**
@@ -63,19 +68,6 @@ public class Service {
 	return receivedInstance;
     }
     
-    /**
-     * Attempts to add a sighting with the indicated superhero/villain,
-     * location, and date. If successful, an instance with the created sighting
-     * is returned.
-     * 
-     * @param superId
-     * @param locationId
-     * @param date
-     * @return The above instance
-     */
-    public Optional<Sighting> addSighting(int superId, int locationId, LocalDate date) {
-	return sightingDao.createSighting(superId, locationId, date);
-    }
 
     /**
      * A list of the latest sightings.
@@ -176,12 +168,20 @@ public class Service {
 	return superDao.addOrganizationForSuper(superId, organizationId);
     }
 
+    public boolean removeOrganizationForSuper(int superId, int organizationId) {
+	return superDao.removeOrganizationForSuper(superId, organizationId);
+    }
+
     public List<Superpower> getSuperpowers() {
 	return superpowerDao.getSuperpowers();
     }
 
     public boolean addSuperpowerForSuper(int superId, int superpowerId) {
 	return superDao.addSuperpowerForSuper(superId, superpowerId);
+    }
+
+    public boolean removeSuperpowerForSuper(int superId, int superpowerId) {
+	return superDao.removeSuperpowerForSuper(superId, superpowerId);
     }
 
     public boolean updateSuper(int superId, String name, String description, boolean isHero) {
@@ -207,4 +207,167 @@ public class Service {
     public boolean deleteSuperpower(int superpowerId) {
 	return superpowerDao.deleteSuperpower(superpowerId);
     }
+
+    public Optional<Organization> addOrganization(
+	String name, 
+	String description, 
+	String address, 
+	String contact) {
+	
+	return organizationDao.createOrganization(
+	    name, 
+	    description, 
+	    address, 
+	    contact
+	);
+    }
+
+    public Optional<Organization> getOrganizationById(int organizationId) {
+	return organizationDao.getOrganizationById(organizationId);
+    }
+
+    public boolean updateOrganization(
+	int organizationId, 
+	String name, 
+	String description, 
+	String address, 
+	String contact) {
+
+	return organizationDao.updateOrganization(
+	    organizationId, 
+	    name, 
+	    description, 
+	    address, 
+	    contact
+	);
+    }
+
+    public boolean deleteOrganization(int organizationId) {
+	return organizationDao.deleteOrganization(organizationId);
+    }
+
+    public List<Location> getLocations() {
+	return locationDao.getLocations();
+    }
+
+    public Optional<Location> addLocation(
+	String name, 
+	String description,
+	String address, 
+	double latitude, 
+	double longitude) {
+
+	return locationDao.createLocation(
+	    name, 
+	    description, 
+	    address,
+	    latitude, 
+	    longitude
+	);
+    }
+
+    public Optional<Location> getLocationById(int locationId) {
+	return locationDao.getLocationById(locationId);
+    }
+
+    public boolean updateLocation(
+	int locationId,
+	String name, 
+	String description,
+	String address, 
+	double latitude, 
+	double longitude) {
+
+	return locationDao.updateLocation(
+	    locationId, 
+	    name, 
+	    description, 
+	    address, 
+	    latitude, 
+	    longitude
+	);
+    }
+
+    public boolean deleteLocation(int locationId) {
+	return locationDao.deleteLocation(locationId);
+    }
+
+    public List<Sighting> getSightings() {
+	return sightingDao.getSightings();
+    }
+
+    /**
+     * Attempts to add a sighting with the indicated superhero/villain,
+     * location, and date. If successful, an instance with the created sighting
+     * is returned.
+     * 
+     * @param superId
+     * @param locationId
+     * @param date
+     * @return The above instance
+     */
+    public Optional<Sighting> addSighting(int superId, int locationId, LocalDate date) {
+	return sightingDao.createSighting(superId, locationId, date);
+    }
+
+    public Optional<Sighting> getSightingById(int sightingId) {
+	return sightingDao.getSightingById(sightingId);
+    }
+
+    public boolean updateSighting(int sightingId, int superId, int locationId, LocalDate date) {
+	return sightingDao.updateSighting(sightingId, superId, locationId, date);
+    }
+
+    public boolean deleteSighting(int sightingId) {
+	return sightingDao.deleteSighting(sightingId);
+    }
+    
+    public void addErrors(String subject, Set<String> errSet, String fieldName, int lengthLimit) {
+    	if (subject == null) {
+	    errSet.add(String.format("%s must not be null", fieldName));
+	} else if (subject.length() <= 0) {
+	    errSet.add(String.format("%s must not be empty", fieldName));
+	} else if (subject.length() >= lengthLimit) {
+	    errSet.add(String.format(
+		"For now our database can only handle %d char(s) per %s. Please "
+		+ "keep it less than %d chars long",
+		lengthLimit,
+		fieldName,
+		lengthLimit
+	    ));
+	}
+    }
+
+    public void addErrorsAllowEmpty(String subject, Set<String> errSet, String fieldName, int lengthLimit) {
+    	if (subject == null) {
+	    errSet.add(String.format("%s must not be null", fieldName));
+	} else if (subject.length() >= lengthLimit) {
+	    errSet.add(String.format(
+		"For now our database can only handle %d char(s) per %s. Please "
+		+ "keep it less than %d chars long",
+		lengthLimit,
+		fieldName,
+		lengthLimit
+	    ));
+	}
+    }
+
+    public void addGeocordErrors(String numStr, Set<String> errors, String fieldName) {
+    	try {
+	    double val = Double.parseDouble(numStr);
+	    if (val < -180 || val > 180) {
+		errors.add(String.format("%s must be a number in the domain [-180, 180]", fieldName));
+	    }
+	} catch (NumberFormatException ex) {
+	    errors.add(String.format("%s must be a number", fieldName));
+	}
+    }
+
+    public void addIntegralErrors(String intStr, Set<String> errors, String fieldName) {
+    	try {
+	    int val = Integer.parseInt(intStr);
+	} catch (NumberFormatException ex) {
+	    errors.add(String.format("%s must be an integer", fieldName));
+	}
+    } 
 }

@@ -2,6 +2,7 @@ package com.bm.superheroessightings.controller;
 
 import com.bm.superheroessightings.controller.dto.Super;
 import com.bm.superheroessightings.service.Service;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -59,26 +60,8 @@ public class PrimaryController {
 	mod.addAttribute("orgs", service.getOrganizations());
 
 	Set<String> errors = new HashSet<>();
-	if (name == null) {
-	    errors.add("The name of the superhero/villain should not be null");
-	} else if (name.length() <= 0) {
-	    errors.add("The name of the superhero/villain must not be empty");
-	} else if (name.length() > 50) {
-	    String err = "For now, our database can only handle 50 characters "
-		+ "per superhero name. Please keep the names no more than 50 "
-		+ "characters long";
-	    errors.add(err); 
-	}
-
-	if (description == null) {
-	    errors.add("The description of the superhero can be empty, but never null");
-	} else if (description.length() > 500) {
-	    String err = "For now, our database can only handle 500 characters "
-		+ "per superhero description. Please keep the descriptions no more than 500 "
-		+ "characters long";
-	    errors.add(err); 
-	}
-	
+	service.addErrors(name, errors, "Name", 50);
+	service.addErrorsAllowEmpty(description, errors, "Description", 500);
 
 	if (!errors.isEmpty()) {
 	    mod.addAttribute("errors", errors);
@@ -137,6 +120,17 @@ public class PrimaryController {
     	return "redirect:/superhero-sightings/super/" + superId;	
     }
 
+    @PostMapping("super/{superId}/removePower/{powerId}")
+    public String removePowerForSuper(@PathVariable int superId, @PathVariable int powerId) {
+	service.removeSuperpowerForSuper(superId, powerId);
+	return "redirect:/superhero-sightings/super/" + superId;
+    }
+
+    @PostMapping("super/{superId}/removeOrganization/{organizationId}")
+    public String removeOrganizationForSuper(@PathVariable int superId, @PathVariable int organizationId) {
+	service.removeOrganizationForSuper(superId, organizationId);
+	return "redirect:/superhero-sightings/super/" + superId;
+    }
     /*
     -- SUPER EDITING
     */
@@ -168,26 +162,8 @@ public class PrimaryController {
 	    mod.addAttribute("super", possSuper.get());
 
 	    Set<String> errors = new HashSet<>();
-	    if (superName == null) {
-		errors.add("The name of the superhero/villain cannot be null");
-	    } else if (superName.length() <= 0) {
-		errors.add("The name of the superhero/villain must not be empty");
-	    } else if (superName.length() > 50) {
-		errors.add(
-		    "Currently, our database can only handle 50 characters for names. "
-		    + "Please keep the names no more than 50 characters long." 
-		);
-	    }
-
-	    if (superDescription == null) {
-		errors.add("The description may be empty, but never null");
-	    } else if (superDescription.length() > 500) {
-		errors.add(
-		    "Currently, our database can only handle 500 characters for "
-		    + "descriptions. Please keep descriptions no more than 500 "
-		    + "characters long."
-		);
-	    }
+	    service.addErrors(superName, errors, "Name", 50);
+	    service.addErrorsAllowEmpty(superDescription, errors, "Description", 500);
 
 	    if (!errors.isEmpty()) {
 	    	mod.addAttribute("errors", errors);
@@ -241,17 +217,7 @@ public class PrimaryController {
 	mod.addAttribute("powers", service.getSuperpowers());
 
 	Set<String> errors = new HashSet<>();
-    	if (superpowerName == null) {
-	    errors.add("Superpower names must not be null");
-	} else if (superpowerName.length() <= 0) {
-	    errors.add("Superpower names cannot be empty");
-	} else if (superpowerName.length() > 50) {
-	    errors.add(
-		"For now, our database can only handle 50 characters per "
-		+ "superpower name. Please keep such names no more than 50 "
-		+ "characters long"
-	    );
-	}
+	service.addErrors(superpowerName, errors, "Name", 50);
 
 	if (!errors.isEmpty()) {
 	    mod.addAttribute("errors", errors);
@@ -300,17 +266,8 @@ public class PrimaryController {
 	if (possPower.isPresent()) {
 	    mod.addAttribute("power", possPower.get());
 	    Set<String> errors = new HashSet<>();
-	    if (superpowerName == null) {
-		errors.add("Superpower names must not be null");
-	    } else if (superpowerName.length() <= 0) {
-		errors.add("Superpower names cannot be empty");
-	    } else if (superpowerName.length() > 50) {
-		errors.add(
-		    "For now, our database can only handle 50 characters per "
-		    + "superpower name. Please keep such names no more than 50 "
-		    + "characters long"
-		);
-	    }
+	    service.addErrors(superpowerName, errors, "Name", 50);
+
 	    if (!errors.isEmpty()) {
 		mod.addAttribute("errors", errors);
 		retrPage = "superpower-edit";
@@ -345,5 +302,404 @@ public class PrimaryController {
     public String performPowerDeletion(@PathVariable int superpowerId) {
 	service.deleteSuperpower(superpowerId);
 	return "redirect:/superhero-sightings/superpower";
+    }
+
+    /*
+    -- ORGANIZATION PAGE
+    */
+    @GetMapping("organization")
+    public String organizationInfo(Model mod) {
+	mod.addAttribute("orgs", service.getOrganizations());
+	mod.addAttribute("errors", new HashSet<String>());
+    	return "organization";	
+    }
+
+    @PostMapping("organization")
+    public String addOrg(
+	Model mod, 
+	String name, 
+	String description, 
+	String address, 
+	String contact) {
+    
+	mod.addAttribute("orgs", service.getOrganizations());
+	String retrPage;
+
+	Set<String> errors = new HashSet<>();
+	service.addErrors(name, errors, "Name", 50);
+	service.addErrorsAllowEmpty(description, errors, "Description", 500);	
+	service.addErrorsAllowEmpty(address, errors, "Address", 100);	
+	service.addErrorsAllowEmpty(contact, errors, "Contact", 100);	
+
+	if (!errors.isEmpty()) {
+	    mod.addAttribute("errors", errors);
+	    retrPage = "organization";
+	} else {
+	    var possOrg = service.addOrganization(
+		name, 
+		description, 
+		address, 
+		contact
+	    );
+	    if (possOrg.isPresent()) {
+		retrPage = "redirect:/superhero-sightings/organization";
+	    } else {
+		errors.add("Sorry, we were unable to create the organization");
+		mod.addAttribute("errors", errors);
+		retrPage = "organization";
+	    } 
+	}
+	return retrPage;
+    }
+
+    /*
+    -- ORGANIZATION DETAIL
+    */
+    @GetMapping("organization/{organizationId}")
+    public String orgDetail(Model mod, @PathVariable int organizationId) {
+    	var possOrg = service.getOrganizationById(organizationId);	
+	if (possOrg.isEmpty()) {
+	    return "redirect:/superhero-sightings/organization";
+	}
+	mod.addAttribute("org", possOrg.get());
+	return "organization-detail";
+    }
+
+    /*
+    -- ORGANIZATION EDITING
+    */
+    @GetMapping("organization/{organizationId}/edit")
+    public String orgEditing(Model mod, @PathVariable int organizationId) {
+    	var possOrg = service.getOrganizationById(organizationId);	
+	if (possOrg.isEmpty()) {
+	    return "redirect:/superhero-sightings/organization";
+	}
+	mod.addAttribute("org", possOrg.get());
+	mod.addAttribute("errors", new HashSet<>());
+	return "organization-edit";
+    }
+
+
+    @PostMapping("organization/{organizationId}/save")
+    public String orgSaving(
+	Model mod,
+	@PathVariable int organizationId,
+	String name, 
+	String description, 
+	String address, 
+	String contact) {
+
+	var possOrg = service.getOrganizationById(organizationId);
+	if (possOrg.isEmpty()) {
+	    return "redirect:/superhero-sightings/organization";
+	}
+	mod.addAttribute("org", possOrg.get());
+
+	String retrPage;
+	Set<String> errors = new HashSet<>();
+	service.addErrors(name, errors, "Name", 50);
+	service.addErrorsAllowEmpty(description, errors, "Description", 500);
+	service.addErrorsAllowEmpty(address, errors, "Address", 100);
+	service.addErrorsAllowEmpty(contact, errors, "Contact", 100);
+
+	if (!errors.isEmpty()) {
+	    mod.addAttribute("errors", errors);
+	    retrPage = "organization-edit";
+	} else if (service.updateOrganization(organizationId, name, description, address, contact)) {
+	    retrPage = "redirect:/superhero-sightings/organization/" + organizationId;
+	} else {
+	    errors.add("Sorry, we were unable to save the organization");
+	    mod.addAttribute("errors", errors);
+	    retrPage = "organization-edit";
+	}
+	return retrPage;
+    }
+
+    /*
+    -- ORGANIZATION DELETION
+    */
+    @GetMapping("organization/{organizationId}/delete-confirm")
+    public String orgDelConfirm(Model mod, @PathVariable int organizationId) {
+	var possOrg = service.getOrganizationById(organizationId);
+	if (possOrg.isEmpty()) {
+	    return "redirect:/superhero-sightings/organization";
+	}
+	mod.addAttribute("org", possOrg.get());
+	return "organization-delete";
+    }
+
+    @PostMapping("organization/{organizationId}/delete")
+    public String orgDel(@PathVariable int organizationId) {
+	service.deleteOrganization(organizationId);
+	return "redirect:/superhero-sightings/organization";
+    }
+
+    /*
+    -- LOCATION PAGE
+    */
+    @GetMapping("location")
+    public String viewLocs(Model mod) {
+    	mod.addAttribute("locations", service.getLocations());
+	return "location";
+    }
+
+    @PostMapping("location")
+    public String addLoc(
+	Model mod, 
+	String name, 
+	String description, 
+	String address, 
+	String latitudeStr, 
+	String longitudeStr) {
+
+	mod.addAttribute("locations", service.getLocations());
+	System.out.println(latitudeStr);
+	System.out.println(longitudeStr);
+	Set<String> errors = new HashSet<>();
+
+	service.addErrors(name, errors, "Name", 50);
+	service.addErrorsAllowEmpty(description, errors, "Description", 500);
+	service.addErrorsAllowEmpty(address, errors, "Address", 100);
+	service.addGeocordErrors(latitudeStr, errors, "Latitude");
+	service.addGeocordErrors(longitudeStr, errors, "Longitude");
+
+	if (!errors.isEmpty()) {
+	    mod.addAttribute("errors", errors);
+	    return "location";
+	} else {
+	    double latitude = Double.parseDouble(latitudeStr);
+	    double longitude = Double.parseDouble(longitudeStr);
+	    if (service.addLocation(name, description, address, latitude, longitude).isPresent()) {
+	    	return "redirect:/superhero-sightings/location";
+	    } else {
+		errors.add("Sorry, we were unable to create the location");
+		mod.addAttribute("errors", errors);
+		return "location";
+	    }
+	}
+    }
+
+    /*
+    -- LOCATION DETAIL
+    */
+    @GetMapping("location/{locationId}")
+    public String showLoc(Model mod, @PathVariable int locationId) {
+	var possLoc = service.getLocationById(locationId);
+	if (possLoc.isEmpty()) {
+	    return "redirect:/superhero-sightings/location";
+	}
+	mod.addAttribute("location", possLoc.get());
+	return "location-detail";
+    }
+
+    /*
+    -- LOCATION EDITING
+    */
+    @GetMapping("location/{locationId}/edit")
+    public String editLoc(Model mod, @PathVariable int locationId) {
+	var possLoc = service.getLocationById(locationId);
+	if (possLoc.isEmpty()) {
+	    return "redirect:/superhero-sightings/location";
+	}
+	mod.addAttribute("location", possLoc.get());
+	return "location-edit";
+    }
+    
+    @PostMapping("location/{locationId}/save")
+    public String saveLoc(
+	Model mod, 
+	@PathVariable int locationId, 
+	String name, 
+	String description, 
+	String address, 
+	String latitudeStr, 
+	String longitudeStr) {
+
+	var possLoc = service.getLocationById(locationId);
+	if (possLoc.isEmpty()) {
+	    return "redirect:/superhero-sightings/location";
+	}
+	mod.addAttribute("location", possLoc.get());
+
+	String retrPage;
+
+	Set<String> errors = new HashSet<>();
+	service.addErrors(name, errors, "Name", 50);
+	service.addErrorsAllowEmpty(description, errors, "Description", 500);
+	service.addErrorsAllowEmpty(address, errors, "Address", 100);
+	service.addGeocordErrors(latitudeStr, errors, "Latitude");
+	service.addGeocordErrors(longitudeStr, errors, "Longitude");
+
+	if (!errors.isEmpty()) {
+	    mod.addAttribute("errors", errors);
+	    retrPage = "location-edit";
+	} else {
+	    double latitude = Double.parseDouble(latitudeStr); 
+	    double longitude = Double.parseDouble(longitudeStr);
+	    if (service.updateLocation(locationId, name, description, address, latitude, longitude)) {
+		retrPage = "redirect:/superhero-sightings/location/" + locationId;
+	    } else {
+		errors.add("Sorry, we were unable to save the location");
+		mod.addAttribute("errors", errors);
+		retrPage = "location-edit";
+	    }
+	}
+	return retrPage;
+    }
+
+    /*
+    -- LOCATION DELETION
+    */
+    @GetMapping("location/{locationId}/delete-confirm")
+    public String delConfLoc(Model mod, @PathVariable int locationId) {
+	var possLoc = service.getLocationById(locationId);
+	if (possLoc.isEmpty()) {
+	    return "redirect:/superhero-sightings/location";
+	}
+	mod.addAttribute("location", possLoc.get());
+    	return "location-delete";	
+    }
+
+    @PostMapping("location/{locationId}/delete")
+    public String delLoc(@PathVariable int locationId) {
+    	service.deleteLocation(locationId);
+	return "redirect:/superhero-sightings/location";
+    }
+
+    /*
+    -- SIGHTING PAGE
+    */
+    @GetMapping("sighting")
+    public String sights(Model mod) {
+	mod.addAttribute("supers", service.getSupers());
+	mod.addAttribute("locations", service.getLocations());
+	mod.addAttribute("sightings", service.getSightings());
+
+	return "sighting";
+    } 
+
+    @PostMapping("sighting")
+    public String makeSighting(Model mod, String superIdStr, String locationIdStr, String sightingDateStr) {
+	mod.addAttribute("supers", service.getSupers());
+	mod.addAttribute("locations", service.getLocations());
+	mod.addAttribute("sightings", service.getSightings());
+    
+	String retrPage;
+
+	Set<String> errors = new HashSet<>();
+    	service.addIntegralErrors(superIdStr, errors, "Super");
+	service.addIntegralErrors(locationIdStr, errors, "Location");
+	var possDate = service.parsedDate(sightingDateStr);
+	if (possDate.isEmpty()) {
+	    errors.add("The date of sighting must be an actual date");
+	}
+
+	if (!errors.isEmpty()) {
+	    mod.addAttribute("errors", errors);
+	    retrPage = "sighting";
+	} else {
+	    int superId = Integer.parseInt(superIdStr);
+	    int locationId = Integer.parseInt(locationIdStr);
+	    LocalDate sightingDate = LocalDate.parse(sightingDateStr);
+	    if (service.addSighting(superId, locationId, sightingDate).isPresent()) {
+		retrPage = "redirect:/superhero-sightings/sighting"; 
+	    } else {
+		errors.add("Sorry, we were not able to save the sighting");
+		mod.addAttribute("errors", errors);
+		retrPage = "sighting";
+	    }
+	}
+	return retrPage;
+    }
+
+    /*
+    -- SIGHTING DETAIL
+    */
+    @GetMapping("sighting/{sightingId}")
+    public String viewSighting(Model mod, @PathVariable int sightingId) {
+    	var possSighting = service.getSightingById(sightingId);
+	if (possSighting.isEmpty()) {
+	    return "redirect:/superhero-sighting/sighting";
+	}
+	mod.addAttribute("sighting", possSighting.get());
+	return "sighting-detail";
+    }
+
+    /*
+    -- SIGHTING EDIT
+    */
+    @GetMapping("sighting/{sightingId}/edit")
+    public String editSighting(Model mod, @PathVariable int sightingId) {
+    	var possSighting = service.getSightingById(sightingId);
+	if (possSighting.isEmpty()) {
+	    return "redirect:/superhero-sighting/sighting";
+	}
+	mod.addAttribute("sighting", possSighting.get());
+	mod.addAttribute("supers", service.getSupers());
+	mod.addAttribute("locations", service.getLocations());
+
+	return "sighting-edit";
+    }
+
+    @PostMapping("sighting/{sightingId}/save")
+    public String saveSighting(
+	Model mod, 
+	@PathVariable int sightingId, 
+	String superIdStr, 
+	String locationIdStr, 
+	String sightingDateStr) {
+
+    	var possSighting = service.getSightingById(sightingId);
+	if (possSighting.isEmpty()) {
+	    return "redirect:/superhero-sighting/sighting";
+	}
+	mod.addAttribute("sighting", possSighting.get());
+	mod.addAttribute("supers", service.getSupers());
+	mod.addAttribute("locations", service.getLocations());
+
+	String retrPage;
+	Set<String> errors = new HashSet<>();
+    	service.addIntegralErrors(superIdStr, errors, "Super");
+	service.addIntegralErrors(locationIdStr, errors, "Location");
+	var possDate = service.parsedDate(sightingDateStr);
+	if (possDate.isEmpty()) {
+	    errors.add("The date of sighting must be an actual date");
+	}
+
+	if (!errors.isEmpty()) {
+	    mod.addAttribute("errors", errors);
+	    retrPage = "sighting-edit";
+	} else {
+	    int superId = Integer.parseInt(superIdStr);
+	    int locationId = Integer.parseInt(locationIdStr);
+	    LocalDate sightingDate = LocalDate.parse(sightingDateStr);
+	    if (service.updateSighting(sightingId, superId, locationId, sightingDate)) {
+		retrPage = "redirect:/superhero-sightings/sighting/" + sightingId; 
+	    } else {
+		errors.add("Sorry, we were not able to save the sighting");
+		mod.addAttribute("errors", errors);
+		retrPage = "sighting-edit";
+	    }
+	}
+	return retrPage;
+    }
+
+    /*
+    -- SIGHTING DELETE
+    */
+    @GetMapping("sighting/{sightingId}/delete-confirm")
+    public String deleteConfSighting(Model mod, @PathVariable int sightingId) {
+    	var possSighting = service.getSightingById(sightingId);
+	if (possSighting.isEmpty()) {
+	    return "redirect:/superhero-sighting/sighting";
+	}
+	mod.addAttribute("sighting", possSighting.get());
+	return "sighting-delete";
+    }
+
+    @PostMapping("sighting/{sightingId}/delete")
+    public String deleteSighting(@PathVariable int sightingId) {
+	service.deleteSighting(sightingId);
+	return "redirect:/superhero-sightings/sighting";
     }
 }

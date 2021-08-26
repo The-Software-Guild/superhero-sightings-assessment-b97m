@@ -97,8 +97,8 @@ public class OrganizationDaoDB implements OrganizationDao {
 		    var statement = conn.prepareStatement(
 			"INSERT INTO organizations ("
 			+ "organizationName, "
-			+ "organizationDescription "
-			+ "organizationAddress "
+			+ "organizationDescription, "
+			+ "organizationAddress, "
 			+ "organizationContact"
 			+ ") VALUES (?, ?, ?, ?)", 
 			Statement.RETURN_GENERATED_KEYS

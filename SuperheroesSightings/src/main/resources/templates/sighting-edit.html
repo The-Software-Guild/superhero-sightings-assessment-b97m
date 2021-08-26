@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http:ww/www.w3.org/1999/xhtml" lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Superhero Sightings | Sightings Editing</title>
+
+	<!-- custom css -->
+	<link th:href="@{/sighting.css}" rel="stylesheet">
+    </head>
+    <body>
+	<header>
+	    <h1>Sightings</h1>
+	</header>
+	<main>
+	    <div id="nav-links">
+		<a href="../../home">Home</a>
+		<a href="../../super">Superheroes and Villains</a>
+		<a href="../../superpower">Superpowers</a>
+		<a href="../../organization">Organizations</a>
+		<a href="../../location">Locations</a>
+		<a href="../../sighting">Sightings</a>
+	    </div>
+	    <form id="sighting-edit-form" th:action="'../' + ${sighting.id} + '/save'" method="POST">
+		<label for="superIdStr">Super</label>
+		<select name="superIdStr">
+		    <option th:each="super : ${supers}" th:value="${super.id}" th:text="${super.name}" th:selected="${sighting.sightedSuper.id == super.id}">Super</option>
+		</select>
+
+		<label for="locationIdStr">Location</label>
+		<select name="locationIdStr">
+		    <option th:each="location : ${locations}" th:value="${location.id}" th:text="${location.name}" th:selected="${sighting.sightingLocation.id == location.id}">Location</option>
+		</select>
+
+		<label for="sightingDateStr">Date of Sighting</label>
+		<input type="date" name="sightingDateStr" th:value="${sighting.sightingDate}"/>
+
+		<a th:href="'../' + ${sighting.id}">Cancel changes</a>
+		<button type="submit">Submit changes</button>
+	    </form>
+	    <a href="./delete-confirm">Delete this sighting</a>
+	    <ul id="sightings-edit-errors">
+		<li class="sightings-edit-errors-item" th:each="error : ${errors}" th:text="${error}">Item</li>
+	    </ul>
+	</main>
+    </body>
+</html>

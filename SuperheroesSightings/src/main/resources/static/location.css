@@ -36,72 +36,6 @@ a:hover, a:focus {
     font-size: 1.2em;
 }
 
-#supers-content {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-column-gap: 2em;
-    grid-row-gap: 2em;
-}
-
-.supers-content-block {
-    padding: 1em;
-    border: 1px solid black;
-    display: grid;
-    grid-template-rows: 1fr 1fr;
-    grid-row-gap: 1em;
-}
-
-.supers-content-block a {
-    padding: 1em;
-    border: 1px solid black;
-}
-
-#supers-info {
-    text-align: left;
-    display: grid;
-    grid-row-gap: 2em;
-    margin-bottom: 2em;
-}
-
-#supers-info h2 {
-    font-size: 2.2em;
-    margin-bottom: 0.5em;
-}
-
-.supers-info-init p {
-    font-size: 1.2em;
-}
-
-.supers-info-powers-list, .supers-info-orgs-list {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-column-gap: 1em;
-}
-
-.supers-info-powers-list-item, .supers-info-orgs-list-item {
-    border: 1px solid black;
-    text-align: center;
-    padding: 1em;
-}
-
-.supers-info-powers-list + form, .supers-info-orgs-list + form {
-    margin-top: 1em;
-}
-.supers-info-powers-list-item form, .supers-info-orgs-list-item form {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-#supers-info + a {
-    border: 1px solid black;
-    padding: 1em;
-}
-
-#supers-content + form {
-    margin-top: 1em;
-}
-
 input, textarea, button {
     border: 1px solid black;
     padding: 1em;
@@ -115,14 +49,70 @@ textarea:hover, textarea:focus{
     font-size: 1.2em;
 }
 
-#super-edit-form {
+#locations-content {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-column-gap: 2em;
+    grid-row-gap: 2em;
+}
+
+.locations-content-block {
+    padding: 1em;
+    border: 1px solid black;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-row-gap: 1em;
+}
+
+.locations-content-block a {
+    padding: 1em;
+    border: 1px solid black;
+}
+
+#locations-info {
+    text-align: left;
+    display: grid;
+    grid-row-gap: 2em;
+    margin-bottom: 2em;
+}
+
+#locations-info h2 {
+    font-size: 2.2em;
+}
+
+#locations-info h3 {
+    font-size: 2.0em;
+}
+
+#locations-info + a {
+    padding: 1em;
+    border: 1px solid black;
+}
+
+#locations-content + form {
+    margin-top: 1em;
+}
+
+#creation-errors, #locations-edit-errors {
+    margin-top: 2em;
+}
+
+#creation-errors li, #locations-edit-errors li {
+    list-style: none;
+    color: red;
+    border: 1px solid red;
+    background-color: hsl(0, 100%, 95%);
+    margin: 1em 0;
+}
+
+#location-edit-form {
     display: grid;
     grid-template-columns: 1fr 2fr;
     grid-column-gap: 1em;
     grid-row-gap: 1em;
     align-items: center;
 }
-#super-edit-form a {
+#location-edit-form a {
     color: black;
     border: 1px solid black;
     height: 100%;
@@ -130,7 +120,7 @@ textarea:hover, textarea:focus{
     padding-top: 1em;
 }
 
-#super-edit-form + a {
+#location-edit-form + a {
     display: block;
     background-color: hsl(0, 100%, 95%);
     border: 1px solid black;
@@ -139,31 +129,20 @@ textarea:hover, textarea:focus{
     color: red;
 }
 
-#creation-errors, #supers-edit-errors {
-    margin-top: 2em;
-}
 
-#creation-errors li, #supers-edit-errors li {
-    list-style: none;
-    color: red;
-    border: 1px solid red;
-    background-color: hsl(0, 100%, 95%);
-    margin: 1em 0;
-}
-
-#super-delete-form {
+#location-delete-form {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-column-gap: 1em;
     grid-row-gap: 2em;
 }
 
-#super-delete-form h2 {
+#location-delete-form h2 {
     grid-column: 1 / 3;
     align-items: center;
 }
 
-#super-delete-form a {
+#location-delete-form a {
     border: 1px solid black;
     padding-top: 1em;
 }

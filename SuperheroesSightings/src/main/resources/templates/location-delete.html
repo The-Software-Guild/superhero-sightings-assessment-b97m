@@ -4,16 +4,14 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <title>Superhero Sightings | Superheroes Deleting</title>
-	<!-- custom css -->
-	<link th:href="@{/super.css}" rel="stylesheet">
+        <title>Superhero Sightings | Locations Deleting</title>
 
-	<!-- jQuery 3.6.0 via CDN -->
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+	<!-- custom css -->
+	<link th:href="@{/location.css}" rel="stylesheet">
     </head>
     <body>
 	<header>
-	    <h1>Superheroes and Villains</h1>
+	    <h1>Locations</h1>
 	</header>
 	<main>
 	    <div id="nav-links">
@@ -24,8 +22,8 @@
 		<a href="../../location">Locations</a>	
 		<a href="../../sighting">Sightings</a>
 	    </div>
-	    <form id="super-delete-form" th:action="'../' + ${super.id} + '/delete'" method="POST">
-		<h2 th:text="'Are you sure you want to delete ' + ${super.name} + ' from the records?'">
+	    <form id="location-delete-form" th:action="'../' + ${location.id} + '/delete'" method="POST">
+		<h2 th:text="'Are you sure you want to delete ' + ${location.name} + ' from the records?'">
 		    Confirm
 		</h2> 
 		<a href="./edit">No! Take me back!</a>

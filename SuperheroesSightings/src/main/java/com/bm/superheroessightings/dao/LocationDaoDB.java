@@ -28,12 +28,12 @@ public class LocationDaoDB implements LocationDao {
 
     private static final RowMapper<Location> LOCATION_MAPPER = (ResultSet rs, int index) -> {
 	Location loc = new Location();
-	loc.setId(rs.getInt("locationId"));
-	loc.setName(rs.getString("locationName"));
+	loc.setId(rs.getInt(            "locationId"));
+	loc.setName(rs.getString(       "locationName"));
 	loc.setDescription(rs.getString("locationDescription"));
-	loc.setAddress(rs.getString("locationAddress"));
-	loc.setLatitude(rs.getDouble("locationLatitude"));
-	loc.setLongitude(rs.getDouble("locationLongitude"));
+	loc.setAddress(rs.getString(    "locationAddress"));
+	loc.setLatitude(rs.getDouble(   "locationLatitude"));
+	loc.setLongitude(rs.getDouble(  "locationLongitude"));
 	return loc;
     };
 
@@ -101,7 +101,7 @@ public class LocationDaoDB implements LocationDao {
 			Statement.RETURN_GENERATED_KEYS
 		    );
 		    statement.setString(1, name);
-		    statement.setString(1, description);
+		    statement.setString(2, description);
 		    statement.setString(3, address);
 		    statement.setDouble(4, latitude);
 		    statement.setDouble(5, longitude);
@@ -122,6 +122,7 @@ public class LocationDaoDB implements LocationDao {
 	    loc.setAddress(address);
 	    loc.setLatitude(latitude);
 	    loc.setLongitude(longitude);
+	    return Optional.of(loc);
 	} 
 	return Optional.empty();
     }

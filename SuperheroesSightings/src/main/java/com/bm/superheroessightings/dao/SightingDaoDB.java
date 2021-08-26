@@ -51,7 +51,7 @@ public class SightingDaoDB implements SightingDao {
 	List<Sighting> sightings;
 	try {
 	    sightings = jdbc.query(
-		"SELECT * FROM sightings",
+		"SELECT * FROM sightings ORDER BY dateOfSighting DESC",
 		SIGHTING_MAPPER
 	    );
 	} catch (DataAccessException ex) {

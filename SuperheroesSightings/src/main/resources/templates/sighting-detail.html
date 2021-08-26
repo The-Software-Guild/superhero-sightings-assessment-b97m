@@ -4,14 +4,14 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <title>Superhero Sightings | Superpowers Detailed</title>
+        <title>Superhero Sightings | Sightings Detailed</title>
 
 	<!-- custom css -->
-	<link th:href="@{/superpower.css}" rel="stylesheet">
+	<link th:href="@{/sighting.css}" rel="stylesheet">
     </head>
     <body>
 	<header>
-	    <h1>Superpowers</h1>
+	    <h1>Sightings</h1>
 	</header>
 	<main>
 	    <div id="nav-links">
@@ -22,10 +22,17 @@
 		<a href="../location">Locations</a>
 		<a href="../sighting">Sightings</a>
 	    </div>
-	    <div id="superpowers-info">
-		<h2 th:text="${power.name} + ' | Id: ' + ${power.id}">Power</h2>
+	    <div id="sightings-info">
+		<h2>Sighting id</h2>
+		<p th:text="${sighting.id}">Id</p>
+		<h2>Superhero/villain sighted</h2>
+		<p th:text="${sighting.sightedSuper.name}">Super</p>
+		<h2>Location</h2>
+		<p th:text="${sighting.sightingLocation.name}">Location</p>
+		<h2>Date of Sighting</h2>
+		<p th:text="${sighting.sightingDate}">Date</p>
 	    </div>
-	    <a th:href="${power.id} + '/edit'">Edit</a>
+	    <a th:href="${sighting.id} + '/edit'">Edit</a>
 	</main>
     </body>
 </html>

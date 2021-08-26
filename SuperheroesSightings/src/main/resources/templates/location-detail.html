@@ -4,14 +4,14 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <title>Superhero Sightings | Superpowers Detailed</title>
+        <title>Superhero Sightings | Locations Detailed</title>
 
 	<!-- custom css -->
-	<link th:href="@{/superpower.css}" rel="stylesheet">
+	<link th:href="@{/location.css}" rel="stylesheet">
     </head>
     <body>
 	<header>
-	    <h1>Superpowers</h1>
+	    <h1>Locations</h1>
 	</header>
 	<main>
 	    <div id="nav-links">
@@ -19,13 +19,19 @@
 		<a href="../super">Superheroes and Villains</a>
 		<a href="../superpower">Superpowers</a>
 		<a href="../organization">Organizations</a>
-		<a href="../location">Locations</a>
+		<a href="../location">Locations</a>	
 		<a href="../sighting">Sightings</a>
 	    </div>
-	    <div id="superpowers-info">
-		<h2 th:text="${power.name} + ' | Id: ' + ${power.id}">Power</h2>
+	    <div id="locations-info">
+		<h2 th:text="${location.name}">Name</h2>
+		<p th:text="${location.description}">Desc</p>
+		<hr>
+		<h3>Address</h3>
+		<p th:text="${location.address}">Addr</p>
+		<h3>Coordinates</h3>
+		<p th:text="${location.latitude} + '°N, ' + ${location.longitude} + '°W'">Coord</p>
 	    </div>
-	    <a th:href="${power.id} + '/edit'">Edit</a>
+	    <a th:href="${location.id} + '/edit'">Edit</a>
 	</main>
     </body>
 </html>
