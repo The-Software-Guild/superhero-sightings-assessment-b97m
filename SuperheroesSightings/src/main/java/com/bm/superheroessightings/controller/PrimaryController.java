@@ -453,8 +453,6 @@ public class PrimaryController {
 	String longitudeStr) {
 
 	mod.addAttribute("locations", service.getLocations());
-	System.out.println(latitudeStr);
-	System.out.println(longitudeStr);
 	Set<String> errors = new HashSet<>();
 
 	service.addErrors(name, errors, "Name", 50);

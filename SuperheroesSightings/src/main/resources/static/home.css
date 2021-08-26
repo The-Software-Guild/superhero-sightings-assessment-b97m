@@ -63,7 +63,8 @@ with their heights set to 0
 #latest-sightings {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    grid-column-gap: 2em; 
+    column-gap: 2em; 
+    row-gap: 2em;
 }
 
 .sighting {
