@@ -34,10 +34,9 @@
 		<label for="superIsHero">Hero?</label>
 		<input type="checkbox" name="superIsHero" th:checked="${super.isHero}" />
 
-		<a th:href="'../' + ${super.id}">Cancel Changes</a>
+		<a href="../../super">Cancel Changes</a>
 		<button type="submit">Submit changes</button>
 	    </form>
-	    <a href="./delete-confirm">Delete this super</a>
 	    <ul id="supers-edit-errors">
 		<li class="supers-edit-errors-item" th:each="error : ${errors}" th:text="${error}">err</li>
 	    </ul>

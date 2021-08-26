@@ -38,10 +38,9 @@
 		<label for="longitudeStr">Longitude</label>
 		<input name="longitudeStr" type="number" th:value="${location.longitude}" required step="0.001"/>
 
-		<a th:href="'../' + ${location.id}">Cancel changes</a>
+		<a href="../../location">Cancel changes</a>
 		<button type="submit">Submit changes</button>
 	    </form>
-	    <a href="./delete-confirm">Delete this location</a>
 	    <ul id="locations-edit-errors">
 		<li class="locations-edit-errors-item" th:each="error : ${errors}" th:text="${error}">Item</li>
 	    </ul>

@@ -93,9 +93,13 @@ a:hover, a:focus {
     align-items: center;
 }
 
-#supers-info + a {
+#supers-info + a, #supers-info + a + a {
+    display: block;
+    margin: auto;
+    margin-top: 1em;
     border: 1px solid black;
     padding: 1em;
+    width: 25%;
 }
 
 #supers-content + form {

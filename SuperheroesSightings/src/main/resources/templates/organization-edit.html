@@ -35,10 +35,9 @@
 		<label for="contact">Contact</label>
 		<input name="contact" th:value="${org.contact}" />
 
-		<a th:href="'../' + ${org.id}">Cancel changes</a>
+		<a href="../../organization">Cancel changes</a>
 		<button type="submit">Submit changes</button>
 	    </form>
-	    <a href="./delete-confirm">Delete this organization</a>
 	    <ul id="organizations-edit-errors">
 		<li class="organizations-edit-errors-item" th:each="error : ${errors}" th:text="${error}">Item</li>
 	    </ul>

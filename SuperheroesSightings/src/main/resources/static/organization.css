@@ -111,7 +111,7 @@ hr {
     font-size: 2.0em;
 }
 
-#organizations-info + a {
+#organizations-info + a, #organizations-info + a + a {
     display: block;
     margin: auto;
     margin-top: 1em;

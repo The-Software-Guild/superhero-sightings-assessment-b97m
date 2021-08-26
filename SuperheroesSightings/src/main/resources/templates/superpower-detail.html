@@ -26,6 +26,7 @@
 		<h2 th:text="${power.name} + ' | Id: ' + ${power.id}">Power</h2>
 	    </div>
 	    <a th:href="${power.id} + '/edit'">Edit</a>
+	    <a th:href="${power.id} + '/delete-confirm'">Delete this superpower</a>
 	</main>
     </body>
 </html>

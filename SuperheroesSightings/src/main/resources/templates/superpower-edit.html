@@ -25,10 +25,9 @@
 	    <form id="superpower-edit-form" th:action="'../' + ${power.id} + '/save'" method="POST">
 		<label for="superpowerName">Superpower name</label>
 		<input name="superpowerName" th:value="${power.name}" />
-		<a th:href="'../' + ${power.id}">Cancel changes</a>
+		<a href="../../superpower">Cancel changes</a>
 		<button type="submit">Submit changes</button>
 	    </form>
-	    <a href="./delete-confirm">Delete this superpower</a>
 	    <ul id="superpowers-edit-errors">
 		<li class="superpowers-edit-errors-item" th:each="error : ${errors}" th:text="${error}">Item</li>
 	    </ul>

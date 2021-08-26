@@ -32,6 +32,7 @@
 		<p th:text="${location.latitude} + '°N, ' + ${location.longitude} + '°W'">Coord</p>
 	    </div>
 	    <a th:href="${location.id} + '/edit'">Edit</a>
+	    <a th:href="${location.id} + '/delete-confirm'">Delete this location</a>
 	</main>
     </body>
 </html>

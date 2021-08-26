@@ -36,10 +36,9 @@
 		<label for="sightingDateStr">Date of Sighting</label>
 		<input type="date" name="sightingDateStr" th:value="${sighting.sightingDate}"/>
 
-		<a th:href="'../' + ${sighting.id}">Cancel changes</a>
+		<a href="../../sighting">Cancel changes</a>
 		<button type="submit">Submit changes</button>
 	    </form>
-	    <a href="./delete-confirm">Delete this sighting</a>
 	    <ul id="sightings-edit-errors">
 		<li class="sightings-edit-errors-item" th:each="error : ${errors}" th:text="${error}">Item</li>
 	    </ul>
